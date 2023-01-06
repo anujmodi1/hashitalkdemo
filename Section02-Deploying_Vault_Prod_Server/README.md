@@ -23,14 +23,15 @@ kubectl  get all -n dev-vault
 git clone https://github.com:hashicorp/vault-helm.git
 cd vault-helm/
 #Use the chart.yaml file from repo to deploy vault
-helm -n dev-vault install dev-vault . -f /Users/anmodi/dev/ciscolivedemo/HELM/VAULT/dev-vault-values.yaml
 **#Vault Depployment**
-#helm -n dev-vault install dev-vault hashicorp/vault -f values.yaml
+helm -n dev-vault install dev-vault hashicorp/vault -f values.yaml
+helm -n dev-vault install dev-vault . -f /Users/anmodi/dev/hashitalkdemo/Section02-Deploying_Vault_Prod_Server/dev-vault-values.yaml
+
 helm status dev-vault -n dev-vault
 kubectl  get all -n dev-vault
 kubectl exec -it dev-vault-0 -n dev-vault -- vault status
 kubectl exec -it pod/dev-vault-0 -n dev-vault -- vault operator init -n 1 -t 1
-kubectl exec -it pod/dev-vault-0 -n dev-vault -- vault operator unseal MqK2syzwzzslNzLtCHvl5wu4o5ZXpSjfcaO/p/md8Uw=
+kubectl exec -it pod/dev-vault-0 -n dev-vault -- vault operator unseal FEosw0j/DTg3Dl+Q1qFKHH+5aFIjiiRSAYWl/hb1sT4=
 #deleting the data in the vault
 helm del --purge vault
 helm uninstall dev-vault -n dev-vault
@@ -56,6 +57,16 @@ path "concourse/*" {
 capabilities = ["read"]
 }
 
+Until IAM STS Auth is configured (complex and not necessarily required for lab)
+
+- [] Add the AWS Keys in the following format required by the pipeline. Check Pipeline Params.
+
+- [] vault auth enable approle
+- [] vault write auth/approle/role/concourse policies=concourse period=24h
+- [] vault read auth/approle/role/concourse/role-id
+- [] vault write -f auth/approle/role/concourse/secret-id
+- [] update the concourse helm chart with the role-id and secret-id
+
 #approle authentication for concourse
 vault auth enable approle
 #default is 1hour expiration policy
@@ -64,21 +75,21 @@ vault write auth/approle/role/concourse policies=concourse period=24h
 vault read auth/approle/role/concourse/role-id
 vault write -f auth/approle/role/concourse/secret-id
 
-#development and main policy
+#ciscolivedemo and main policy
 
-path "concourse/development/*" {
-capabilities = ["read", "create","update", "list"]
+path "concourse/ciscolivedemo/*" {
+  capabilities = ["read", "create","update", "list"]
 }
 
 path "concourse/main/*" {
-capabilities = ["read", "create","update", "list"]
+  capabilities = ["read", "create","update", "list"]
 }
 
-#development and main secrets
+#ciscolivedemo and main secrets
 aws key, secret and ssh.token
 AWS_KEY_ID: ((Access_key_ID.Access_key))
 AWS_KEY: ((Secret_access_key.Secret_access_key))
 SSH_TOKEN: ((ssh-token.token))
 
 
-vault token create --policy development --period 24h
+vault token create --policy ciscolivedemo --period 24h
