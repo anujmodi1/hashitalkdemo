@@ -93,5 +93,5 @@ fly -t target set-team --team-name ciscolivedemo --local-user ap-south-1a -c ope
 fly -t target set-team --team-name ciscolivedemo --local-user ap-south-1a
 fly -t target set-team -n ciscolivedemo -c operator-role.yml
 
-fly -t target set-pipeline -p pipeline1 -c /Users/anmodi/dev/ciscolivedemo/pipelines/pipeline-v2.yml -l /Users/anmodi/dev/notes-ciscolive/ciscolive-params.yml -v aws.region=ap-south-1 -v az.name=ap-south-1a -v vault.addr=http://dev-vault.ciscolivedemo2022.com:8200
+fly -t target set-pipeline -p pipeline1 -c /Users/anmodi/dev/hashitalkdemo/Section03-Deploying_Concourse_CI_Server/pipeline-v4.yml -l /Users/anmodi/dev/notes-hashitalkdemo/hashitalk-params.yml -v aws.region=ap-south-1 -v az.name=ap-south-1a -v vault.addr=http://dev-vault.ciscolivedemo2022.com:8200
 
