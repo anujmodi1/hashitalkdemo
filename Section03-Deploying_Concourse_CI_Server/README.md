@@ -20,7 +20,7 @@ If you wish to upgrade the image tag or chart version, you should first test it 
     - line 2789:localUsers: "ci:cisco@2022,ap-south-1a:ap-south-1a!"
 - [] Update your vault url and also your concourse web external url
     - line 250: externalUrl: http://dev-ci.ciscolivedemo2022.com:8080
-    - line 568: url: http://dev-vault.ciscolivedemo2022.com:8200url: http://dev-vault.ciscolivedemo2022.com:8200
+    - line 568: url: http://dev-vault.ciscolivedemo2022.com:8200
 - [] Generate an approle_id and secret_id in vault and update the values file - there are two place to update this, search on "vaultAuthParam"
     - line 607: vaultAuthParam: "role_id:504cc747-f759-f26b-f477-d0de7c1b5bdb,secret_id:c81036b8-c7e1-0681-f427-9872f80d7020"
 - [] Test out your approle_id and secret_id :
@@ -70,7 +70,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 cd concourse-chart/
 helm dependency build
 kubectl create ns dev-ci
-helm -n dev-ci install dev-ci . -f /Users/anmodi/dev/ciscolivedemo/HELM/CONCOURSE/dev/dev-ci-values.yaml
+helm -n dev-ci install dev-ci . -f /Users/anmodi/dev/hashitalkdemo/Section03-Deploying_Concourse_CI_Server/dev-ci-values.yaml
 helm -n dev-ci install dev-ci . -f values.yaml
 kubectl get svc -n dev-ci
 kubectl get pods -n dev-ci
@@ -83,11 +83,15 @@ http://dev-ci.cisco-fso-labs.com:8080/
 #enter the default user name & password as values.yaml file
 cd /Users/anmodi/dev/cisco-fso-labs/HELM/CONCOURSE
 fly --target=cisco-fso-labs login --concourse-url=http://dev-ci.cisco-fso-labs.com:8080 -n main --username=ci --password=PASSWORD!
-fly --target=development login --concourse-url=http://dev-ci.ciscolivedemo2022.com:8080 -n main --username=ci --password=cisco@2022
+fly --target=target login --concourse-url=http://dev-ci.ciscolivedemo2022.com:8080 -n main --username=ci --password=cisco@2022
 
 # create team cisco-fso--labs
 #setting up team and users
 #https://concourse-ci.org/managing-teams.html
-fly -t cisco-fso-labs set-team --team-name cisco-fso-labs --local-user us-west-2a
-fly -t cisco-fso-labs set-team -n cisco-fso-labs -c operator-role-cisco-fso-labs.yml
+fly -t target set-team --team-name ciscolivedemo --local-user ap-south-1a -c operator-role.yml
+
+fly -t target set-team --team-name ciscolivedemo --local-user ap-south-1a
+fly -t target set-team -n ciscolivedemo -c operator-role.yml
+
+fly -t target set-pipeline -p pipeline1 -c /Users/anmodi/dev/ciscolivedemo/pipelines/pipeline-v2.yml -l /Users/anmodi/dev/notes-ciscolive/ciscolive-params.yml -v aws.region=ap-south-1 -v az.name=ap-south-1a -v vault.addr=http://dev-vault.ciscolivedemo2022.com:8200
 

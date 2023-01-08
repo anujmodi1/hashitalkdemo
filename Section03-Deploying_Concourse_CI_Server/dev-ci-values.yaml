@@ -604,7 +604,7 @@ concourse:
       ##
       useAuthParam: true
       ##vault-client-auth-param: "role_id:a1afb4f1-7f4b-0036-fb26-a42b6df75227,secret_id:3c55073c-5988-24c9-d8f2-914a7a6c448b"
-      vaultAuthParam: "role_id:2d4c8d06-54a0-3d58-0405-1f8318a405d5,secret_id:dfe85f87-9759-8b76-d6ba-dc3dac433576"
+      vaultAuthParam: "role_id:6fc8df9a-aa3a-bf2c-19f2-215f1d01446a,secret_id:9846426f-9afc-bd8d-e8ea-69838065acd1"
 
       ## Path to a directory of PEMEncoded CA cert files to verify the vault server SSL cert.
       ##

@@ -1,0 +1,37 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: sconrod/python-aws-image
+    tag: 2.0
+
+inputs:
+  - name: git-resource
+
+params:
+  VAULT_ADDR: http://dev-vault.devops-ontap.com:8200
+  SSH_TOKEN: ((ssh-token.token))
+  NAME: us-west-1a
+  TE_GROUP: ((te-group.token))
+
+run:
+  path: /bin/sh
+  args:
+    - -ce
+    - |
+      export TE_GROUP=$TE_GROUP
+      echo $TE_GROUP
+      python3 -m pip install --upgrade pip
+      pip3 install netmiko
+      apt -y install ncurses-term
+      chmod a+x ./git-resource/tasks/te/te_config/input/install_te_agent.sh
+      ./git-resource/tasks/te/te_config/input/install_te_agent.sh
+
+
+
+
+
+
+
