@@ -35,7 +35,7 @@ jobs:
           AWS_KEY: ((Secret_access_key.Secret_access_key))
           REGION: ((aws.region))
           NAME: ((az.name))
-          VAULT_ADDR: ((vault.addr))
+          VAULT_ADDR: http://dev-vault.ciscolivedemo2022.com:8200
 
 resource_types:
 resources:
