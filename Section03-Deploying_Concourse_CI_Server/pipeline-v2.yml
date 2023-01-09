@@ -18,7 +18,7 @@ jobs:
           run:
             path: sh
             args:
-              - -ce
+              - -cex
               - |
                 export AWS_PAGER=""
                 export Name=$NAME
@@ -36,18 +36,6 @@ jobs:
           REGION: ((aws.region))
           NAME: ((az.name))
           VAULT_ADDR: ((vault.addr))
-
-  - name: ap-south-1-Mumbai
-    public: true
-    plan:
-      - get: git-resource
-        passed: [lab-prep]
-      - task: aws_deploy_key
-        file: git-resource/tasks/aws_deploy/mumbai/aws_key_deploy.yml
-      - task: aws_deploy_vpc
-        file: git-resource/tasks/aws_deploy/mumbai/aws_env_deploy.yml
-      - task: aws_deploy_ubuntu_mumbai
-        file: git-resource/tasks/aws_deploy/mumbai/aws_deploy_ubuntu.yml
 
 resource_types:
 resources:
